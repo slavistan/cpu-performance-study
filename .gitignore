@@ -1,3 +1,7 @@
 build
 build_debug
 **/raw_data/*
+
+*.pdf
+*.RData
+*.Rhistory

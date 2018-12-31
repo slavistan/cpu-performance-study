@@ -3,34 +3,38 @@ title: "memory-access"
 output: pdf_document
 ---
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+# Cache effects of memory accesses at different offsets 
+A large array is accessed at offsets which are multiples of a certain step size and the time span required to traverse the whole array is recorded.
+
+```c++
+  // Relevant code
+  auto data = std::vector<int>(64 * 1024 * 1024, 1);
+  for(auto ii = 0u; ii < data.size(); ii += step_sz)
+  {
+    data[ii] *= 3;
+  }
 ```
 
-## R Markdown
+## Measurement results
 
-This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+```{r echo=FALSE}
+suppressMessages(library(tidyverse))
 
-When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+data <- read.csv(file = "./data.csv") %>%
+  as_tibble() %>%
+  mutate(step_sz = factor(step_sz)) %>%
+  group_by(step_sz) %>%
+  summarize(duration_us_mean = mean(duration_us), duration_us_sd = sd(duration_us))
 
-```{r cars}
-library(tidyverse)
-
-mydata <- as_tibble(read.csv(file = "data.csv")) %>%
-  select(-data.file.path) %>%
-  group_by(step_sz, build_type) %>%
-  summarize(duration_us_mean = mean(duration_us), duration_us_sd = sd(duration_us), count = n())
-
-ggplot(mydata) %+%
-  geom_line(aes(x = step_sz, y = duration_us_mean, color = build_type))
+ggplot(data) +
+  geom_point(aes(x = step_sz, y = duration_us_mean)) +
+  labs(x = "Step size", y = "Duration [us]")
 ```
 
-## Including Plots
-
-You can also embed plots, for example:
-
-```{r pressure, echo=FALSE}
-plot(pressure)
+```{r echo=FALSE}
+knitr::kable(data %>% select(-duration_us_mean), format="markdown")
 ```
 
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+L1 cache line size on this machine is 64 bytes (16 integers). Although the computational effort is four-fold the required time to complete the task is virtually identical between step sizes 4 and 16. It can be assumed that the overhead of having to load each cache line form memory outweighs the time required to do the computations, regardless of the number of arithmetic operations within this interval. For step sizes 1 and 2, however, the computation becomes relevant again.
+
+The time keeps falling after the step size of 16 is surpassed, as with each larger step size less and less cache lines have to be loaded. While any step size between 1 and 16 requires that the maximum number of cache line loads are performed, and value larger than that skips a certain number of loads. A step size of 32 skips exactly every second cache line load etc. 
