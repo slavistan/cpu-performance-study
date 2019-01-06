@@ -3,7 +3,7 @@ title: "memory-access"
 output: pdf_document
 ---
 
-# Cache effects of memory accesses at different offsets 
+# Impact of cache lines 
 A large array is accessed at offsets which are multiples of a certain step size and the time span required to traverse the whole array is recorded.
 
 ```c++
@@ -18,7 +18,7 @@ A large array is accessed at offsets which are multiples of a certain step size 
 ## Measurement results
 
 ```{r echo=FALSE}
-suppressMessages(library(tidyverse))
+suppressMessages(library(tidyverse))l
 
 data <- read.csv(file = "./impact-of-cache-lines.csv") %>%
   as_tibble() %>%
@@ -31,10 +31,48 @@ ggplot(data) +
   labs(x = "Step size", y = "Duration [us]")
 ```
 
-```{r echo=FALSE}
-knitr::kable(data %>% select(-duration_us_mean), format="markdown")
-```
-
 L1 cache line size on this machine is 64 bytes (16 integers). Although the computational effort is four-fold the required time to complete the task is virtually identical between step sizes 4 and 16. It can be assumed that the overhead of having to load each cache line form memory outweighs the time required to do the computations, regardless of the number of arithmetic operations within this interval. For step sizes 1 and 2, however, the computation becomes relevant again.
 
 The time keeps falling after the step size of 16 is surpassed, as with each larger step size less and less cache lines have to be loaded. While any step size between 1 and 16 requires that the maximum number of cache line loads are performed, and value larger than that skips a certain number of loads. A step size of 32 skips exactly every second cache line load etc. 
+
+# L1 and L2 Cache Line Sizes
+
+An array is created and each of its cache lines is touched from begin to end. This is repeated many times and the average time for each touch (some trivial operation) is recorded.  
+
+```c++
+  // Relevant code
+  auto data = std::vector<int>(array_sz_in_kb * 1000 / sizeof(int), 1);
+  for(auto ii = 0; ii < 1000; ++ii)
+  {
+    // Touch every cache line
+    for(auto ii = 0u; ii < data.size(); ii += L1_CACHE_SIZE / sizeof(int))
+    {
+      data[ii]++;
+    }
+  }
+```
+
+## Measurement results
+
+Sharp increases in the average duration per element are observed around array sizes of 32kiB, 256kiB and 6MiB which are the CPU's L1 and L2 cache sizes. Up to a size of 32 kiB, once each cache line has been loaded into the L1 cache the operation becomes very cheap. However, when the array size surpasses the L1 cache size each iteration of the traversing of the array involves L2 cache loads. The larger the array, the more the number of such L2 cache loads. Hence a great drop in access latency is recorded. 
+
+The same phenomenon occurs when the array size surpasses the L2 cache size around 256kB and once again around 6MiB (L3 cache size).
+
+```{r}
+suppressMessages(library(tidyverse))
+
+data <- read.csv("l1-and-l2-cache-sizes.csv") %>%
+  as_tibble() %>%
+  select(-data.file.path) %>%
+  mutate(array_sz_in_kb = as.integer(array_sz_in_kb)) %>%
+  group_by(array_sz_in_kb, build_type) %>%
+  summarize(duration_ns_per_elem_mean = mean(duration_ns_per_elem), duration_ns_per_elem_sd = sd(duration_ns_per_elem), count = n())
+
+ggplot(data) +
+  geom_point(aes(x = array_sz_in_kb, y = duration_ns_per_elem_mean)) +
+  scale_x_continuous(trans = "log2",
+                     breaks = 2 ^ seq(1, 20)) +
+  labs(x = "Array size [kB]", y = "Avg. duration for operation per element [ns]") + 
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+```
