@@ -20,7 +20,7 @@ A large array is accessed at offsets which are multiples of a certain step size 
 ```{r echo=FALSE}
 suppressMessages(library(tidyverse))
 
-data <- read.csv(file = "./data.csv") %>%
+data <- read.csv(file = "./impact-of-cache-lines.csv") %>%
   as_tibble() %>%
   mutate(step_sz = factor(step_sz)) %>%
   group_by(step_sz) %>%
