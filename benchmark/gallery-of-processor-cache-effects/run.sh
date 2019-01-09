@@ -20,9 +20,15 @@ csv_dir="./analysis"
 ##
 ## Measurement 2
 ##
+#cpuclk lock
+#minstructor -o "${raw_data_dir}/l1-and-l2-cache-sizes" -f -n 25 "${build_dir}/l1-and-l2-cache-sizes [1,2,4,8,16,32,64,128,256,512,1024,2048,4096,8192,16384,32768,65536,131072,262144,524288,1048576]"
+#cpuclk unlock
+#mcollector -f -r -o "${csv_dir}/l1-and-l2-cache-sizes.csv" "${raw_data_dir}/l1-and-l2-cache-sizes"
+
+##
+## Measurement 2
+##
 cpuclk lock
-minstructor -o "${raw_data_dir}/l1-and-l2-cache-sizes" -f -n 25 "${build_dir}/l1-and-l2-cache-sizes [1,2,4,8,16,32,64,128,256,512,1024,2048,4096,8192,16384,32768,65536,131072,262144,524288,1048576]"
+minstructor -o "${raw_data_dir}/instruction-level-parallelism" -f -n 25 "${build_dir}/instruction-level-parallelism [1,2,3,4,5,6,7,8,9,10]"
 cpuclk unlock
-mcollector -f -r -o "${csv_dir}/l1-and-l2-cache-sizes.csv" "${raw_data_dir}/l1-and-l2-cache-sizes"
-
-
+mcollector -f -r -o "${csv_dir}/instruction-level-parallelism.csv" "${raw_data_dir}/instruction-level-parallelism"

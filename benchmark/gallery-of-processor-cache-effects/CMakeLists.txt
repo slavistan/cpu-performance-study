@@ -11,3 +11,10 @@ set_target_properties(l1-and-l2-cache-sizes
   PROPERTIES
     CXX_STANDARD 17
     CXX_EXTENSIONS OFF)
+
+add_executable(instruction-level-parallelism instruction-level-parallelism.cpp)
+target_compile_definitions(instruction-level-parallelism PRIVATE BUILD_TYPE="${CMAKE_BUILD_TYPE}")
+set_target_properties(instruction-level-parallelism
+  PROPERTIES
+    CXX_STANDARD 17
+    CXX_EXTENSIONS OFF)
