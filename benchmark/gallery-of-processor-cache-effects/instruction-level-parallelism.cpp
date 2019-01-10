@@ -19,7 +19,7 @@ int main(int /*argc*/, char** argv)
   }
   catch (...)
   {
-    std::cout << "Usage: ./" << *argv << " <number of instructions>" << std::endl;
+    std::cout << "Usage: " << *argv << " <number of instructions>" << std::endl;
     return 0;
   }
 

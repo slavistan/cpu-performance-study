@@ -22,7 +22,7 @@ int main(int /*argc*/, char** argv)
   }
   catch (...)
   {
-    std::cout << "Usage: ./" << *argv << " <step size>" << std::endl;
+    std::cout << "Usage: " << *argv << " <step size>" << std::endl;
     return 0;
   }
 

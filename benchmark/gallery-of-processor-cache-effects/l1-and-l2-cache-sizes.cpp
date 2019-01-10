@@ -7,6 +7,10 @@
 #include <string>
 #include <vector>
 
+using std::chrono::high_resolution_clock;
+using std::chrono::duration_cast;
+using std::chrono::nanoseconds;
+
 int main(int /*argc*/, char* argv[])
 {
   //
@@ -19,19 +23,15 @@ int main(int /*argc*/, char* argv[])
   }
   catch (...)
   {
-    std::cout << "Usage: '" << *argv << " <array size in kilobytes>'"  << std::endl;
+    std::cout << "Usage: " << *argv << " <array size in kilobytes>"  << std::endl;
     return 0;
   }
-
   //
   // Perform measurement
   //
   auto data = std::vector<int>(array_sz_in_kb * 1000 / sizeof(int));
   std::generate(data.begin(), data.end(), [index = 0]() mutable { return ++index; });
 
-  using std::chrono::high_resolution_clock;
-  using std::chrono::duration_cast;
-  using std::chrono::nanoseconds;
   const auto start = high_resolution_clock::now();
 
   const auto niteration = 100;
@@ -54,7 +54,6 @@ int main(int /*argc*/, char* argv[])
   auto duration = duration_cast<nanoseconds>(finish - start).count();
   const auto duration_per_element = static_cast<double>(duration) / (niteration * data.size());
   std::cout << "  - array_sz_in_kb = " << array_sz_in_kb << std::endl
-            << "  - duration_ns_per_elem = " << duration_per_element << std::endl
-            << "  - build_type = " << BUILD_TYPE << std::endl;
+            << "  - duration_ns_per_elem = " << duration_per_element << std::endl;
   return 0;
 }

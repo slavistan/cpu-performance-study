@@ -17,7 +17,9 @@ if(DEVELOPER_MODE)
   else()
     message(STATUS "clang-tiidy found: ${CLANG_TIDY_EXE}")
     set(DO_CLANG_TIDY
-      "${CLANG_TIDY_EXE}" "-checks='bugprone*,cppcoreguidelines*,cert*,google*,hicpp*,llvm*,misc*,modernize*,performance*,readability*,'")
+      "${CLANG_TIDY_EXE}" "-checks='bugprone*,cppcoreguidelines*,cert*,google*,hicpp*,llvm*,misc*,modernize*,performance*,readability*"
+      "-header-filter=*")
+
   endif()
 
   if(MSVC)
