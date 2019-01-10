@@ -1,31 +1,42 @@
-#include <vector>
-#include <iostream>
-#include <sstream>
-#include <chrono>
 #include <algorithm>
+#include <chrono>
+#include <exception>
+#include <iostream>
+#include <iterator>
+#include <sstream>
+#include <string>
+#include <vector>
 
-int main(int argc, char** argv)
+int main(int /*argc*/, char* argv[])
 {
   //
-  // Parse argument
+  // Parse arguments
   //
-  int array_sz_in_kb = 0;
-  std::stringstream ss(argv[1]);
-  ss >> array_sz_in_kb;
+  int array_sz_in_kb;
+  try
+  {
+    array_sz_in_kb = std::stoi(*std::next(argv));
+  }
+  catch (...)
+  {
+    std::cout << "Usage: '" << *argv << " <array size in kilobytes>'"  << std::endl;
+    return 0;
+  }
 
   //
   // Perform measurement
   //
-  // Init array
   auto data = std::vector<int>(array_sz_in_kb * 1000 / sizeof(int));
-  std::generate(data.begin(), data.end(), [index = (int)0]() mutable { return ++index; });
+  std::generate(data.begin(), data.end(), [index = 0]() mutable { return ++index; });
 
-  using namespace std::chrono;
+  using std::chrono::high_resolution_clock;
+  using std::chrono::duration_cast;
+  using std::chrono::nanoseconds;
   const auto start = high_resolution_clock::now();
 
-  const auto iterations = 100;
+  const auto niteration = 100;
   const auto cache_line_sz_in_bytes = 64;
-  for(int ii = 0; ii < iterations; ++ii)
+  for(int ii = 0; ii < niteration; ++ii)
   {
     // touch every cache line
     for(auto jj = 0u; jj < data.size(); jj += cache_line_sz_in_bytes / sizeof(int))
@@ -35,10 +46,13 @@ int main(int argc, char** argv)
   }
   const auto finish = high_resolution_clock::now();
   // Observe data
-  if(data.back() == 17) std::cout << "This will never happen" << std::endl;
+  if(data.back() == 17)
+  {
+    std::cout << "This will never happen" << std::endl;
+  }
 
   auto duration = duration_cast<nanoseconds>(finish - start).count();
-  const auto duration_per_element = duration / ((double)iterations * (double)data.size());
+  const auto duration_per_element = static_cast<double>(duration) / (niteration * data.size());
   std::cout << "  - array_sz_in_kb = " << array_sz_in_kb << std::endl
             << "  - duration_ns_per_elem = " << duration_per_element << std::endl
             << "  - build_type = " << BUILD_TYPE << std::endl;

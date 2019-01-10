@@ -1,19 +1,27 @@
-#include <iostream>
-#include <vector>
-#include <sstream>
-#include <chrono>
-#include <type_traits>
 #include <algorithm>
+#include <chrono>
+#include <iostream>
 #include <numeric>
+#include <string>
+#include <type_traits>
+#include <vector>
 
-using namespace std::chrono;
+using std::chrono::high_resolution_clock;
+using std::chrono::duration_cast;
+using std::chrono::microseconds;
 
-int main(int argc, char** argv)
+int main(int /*argc*/, char** argv)
 {
-  // Parse input (0 / 1)
   int ninstructions;
-  std::stringstream ss(argv[1]);
-  ss >> ninstructions;
+  try
+  {
+    ninstructions = std::stoi(*std::next(argv));
+  }
+  catch (...)
+  {
+    std::cout << "Usage: ./" << *argv << " <number of instructions>" << std::endl;
+    return 0;
+  }
 
   // Number of loop iterations
   const auto iterations = 1e8;
@@ -154,10 +162,8 @@ int main(int argc, char** argv)
   }
   finish = high_resolution_clock::now();
 
-  //std::cout << "Result = " << std::accumulate(data.begin(), data.end(), 0.0) << std::endl;
-
-  auto duration_ms = duration_cast<microseconds>(finish - start).count();
+  auto duration_us = duration_cast<microseconds>(finish - start).count();
   std::cout << "ninstructions = " << ninstructions << std::endl;
-  std::cout << "duration_ms = " << duration_ms << std::endl;
+  std::cout << "duration_us = " << duration_us << std::endl;
   return 0;
 }
