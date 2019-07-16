@@ -1,0 +1,2 @@
+Scott Meyers on caches
+https://www.aristeia.com/TalkNotes/ACCU2011_CPUCaches.pdf

@@ -1,55 +1,46 @@
-// #include <benchmark/benchmark.h>
+// TODO: Debug build does not show expected results. Instead, the duration does
+//       scale according to the chosen stride. Why is that? What's there to
+//       optimize around a simple for loop?
 
+#include <benchmark/benchmark.h>
+
+#include <algorithm>
 #include <cstdint>
 #include <iostream>
-#include <algorithm>
 #include <numeric>
 #include <vector>
 
-auto data() {
+// Size should be considerable larger than any cache to ensure that most of the
+// time accessing the array requires a memory load from RAM.
+constexpr auto SIZE = 128 * 1024 * 1024;
 
-  auto vec = std::vector<uint64_t>(1024 * 1024 * 1024, 7);
-  std::generate(vec.begin(), vec.end(), [i = (int)0] () mutable { return ++i; });
-  return vec;
-}
+// Choose stride and type such that incrementing the counter guarantees that
+// a new cache line will be accessed. My i7 has a cache line size of
+// 8 x 8 = 64 bytes.
+constexpr auto STRIDE = 8;
+using T = uint64_t;
 
-// static void dense_loop(benchmark::State& state) {
-// 
-//   auto vec = data();
-//   for (auto _: state) {
-//     for (auto ii = 0; ii < vec.size(); ii++) {
-//       benchmark::DoNotOptimize(vec[ii] += 3);
-//     }
-//   }
-// 
-//   benchmark::DoNotOptimize(std::accumulate(vec.begin(), vec.end(), 0.0));
-// }
-// 
-// static void stridden_loop(benchmark::State& state) {
-// 
-//   auto vec = data();
-//   for (auto _: state) {
-//     for (auto ii = 0; ii < vec.size(); ii += 2) {
-//       benchmark::DoNotOptimize(vec[ii] += 3);
-//     }
-//   }
-// 
-//   benchmark::DoNotOptimize(std::accumulate(vec.begin(), vec.end(), 0.0));
-// }
-// 
-// BENCHMARK(dense_loop);
-// BENCHMARK(stridden_loop);
-// 
-// BENCHMARK_MAIN();
+void dense_loop(benchmark::State& state) {
 
-int main() {
-
-  auto vec = data();
-  for (uint64_t ii = 0; ii < vec.size(); ii++) {
-    vec[ii] += ii;
+  auto vec = std::vector<T>(SIZE, 7);
+  for (auto _: state) {
+    for (std::size_t ii = 0; ii < vec.size(); ii++) {
+      benchmark::DoNotOptimize(vec[ii] += 3);
+    }
   }
-
-  std::cout << "bananarama" << vec.back() << vec.front() << std::endl;
-  // std::cout << "Acc = " << std::accumulate(vec.begin(), vec.end(), static_cast<uint64_t>(0)) << std::endl;
-
 }
+
+void stridden_loop(benchmark::State& state) {
+
+  auto vec = std::vector<T>(SIZE, -7); 
+  for (auto _: state) {
+    for (std::size_t ii = 0; ii < vec.size(); ii += STRIDE) {
+      benchmark::DoNotOptimize(vec[ii] += 3);
+    }
+  }
+}
+
+BENCHMARK(stridden_loop);
+BENCHMARK(dense_loop);
+
+BENCHMARK_MAIN();
