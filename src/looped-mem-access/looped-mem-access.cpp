@@ -14,33 +14,18 @@
 // time accessing the array requires a memory load from RAM.
 constexpr auto SIZE = 128 * 1024 * 1024;
 
-// Choose stride and type such that incrementing the counter guarantees that
-// a new cache line will be accessed. My i7 has a cache line size of
-// 8 x 8 = 64 bytes.
-constexpr auto STRIDE = 8;
-using T = uint64_t;
+// This name ('loop') is used inside the analysis script. Don't change it.
+void loop(benchmark::State& state) {
 
-void dense_loop(benchmark::State& state) {
-
-  auto vec = std::vector<T>(SIZE, 7);
+  const auto stride = state.range(0);
+  auto vec = std::vector<uint8_t>(SIZE, 7);
   for (auto _: state) {
-    for (std::size_t ii = 0; ii < vec.size(); ii++) {
+    for (std::size_t ii = 0; ii < vec.size(); ii += stride) {
       benchmark::DoNotOptimize(vec[ii] += 3);
     }
   }
 }
 
-void stridden_loop(benchmark::State& state) {
-
-  auto vec = std::vector<T>(SIZE, -7); 
-  for (auto _: state) {
-    for (std::size_t ii = 0; ii < vec.size(); ii += STRIDE) {
-      benchmark::DoNotOptimize(vec[ii] += 3);
-    }
-  }
-}
-
-BENCHMARK(stridden_loop);
-BENCHMARK(dense_loop);
+BENCHMARK(loop) -> DenseRange(1, 128, 1);
 
 BENCHMARK_MAIN();
