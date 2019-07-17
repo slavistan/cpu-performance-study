@@ -10,9 +10,9 @@
 #include <numeric>
 #include <vector>
 
-// Size should be considerable larger than any cache to ensure that most of the
-// time accessing the array requires a memory load from RAM.
-constexpr auto SIZE = 128 * 1024 * 1024;
+// Size should be considerably larger than any cache to ensure that most memory
+// accesses read from RAM.
+constexpr auto SIZE = 128 * 1024;// * 1024;
 
 // This name ('loop') is used inside the analysis script. Don't change it.
 void loop(benchmark::State& state) {
@@ -26,6 +26,6 @@ void loop(benchmark::State& state) {
   }
 }
 
-BENCHMARK(loop) -> DenseRange(1, 128, 1);
+BENCHMARK(loop) -> DenseRange(1, 5, 1);
 
 BENCHMARK_MAIN();

@@ -7,17 +7,45 @@ target_compile_features(looped-mem-access PRIVATE cxx_std_20)
 target_link_libraries(looped-mem-access PRIVATE benchmark::benchmark)
 
 # Add custom command to generate a report
-add_custom_command(
-  # TODO: What does this OUTPUT mean? It does not have to be the the output file's name
-  OUTPUT report.txt
-  # Run this command ...
-  COMMAND ${CMAKE_CURRENT_SOURCE_DIR}/generate-report.sh ${CMAKE_CURRENT_BINARY_DIR}
-  # ... from inside this directory
-  WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/)
 
-# Now define a target which causes the command to be executed
-# See https://stackoverflow.com/questions/39960173/run-custom-shell-script-with-cmake
+set(CSVDATA "data.csv")
+add_custom_command(
+  OUTPUT ${CSVDATA}
+  DEPENDS looped-mem-access
+  COMMAND ${CMAKE_CURRENT_SOURCE_DIR}/generate-data.sh 
+    $<TARGET_FILE:looped-mem-access>
+    ${CMAKE_CURRENT_BINARY_DIR}/${CSVDATA})
+
 add_custom_target(
-  generate-report ALL
-  DEPENDS report.stxt)
+  generate-csvdata ALL
+  DEPENDS ${CSVDATA}
+  COMMENT "> generate-csvdata: Outfile: '${CMAKE_CURRENT_BINARY_DIR}/${CSVDATA}'")
+
+set(PLOT "plot.png")
+add_custom_command(
+  OUTPUT ${PLOT}
+  DEPENDS generate-csvdata
+  COMMAND Rscript ${CMAKE_CURRENT_SOURCE_DIR}/plot-raw-data.R
+    ${CMAKE_CURRENT_BINARY_DIR}/${CSVDATA}
+    ${CMAKE_CURRENT_BINARY_DIR}/${PLOT})
+
+add_custom_target(
+  generate-plot ALL
+  DEPENDS ${PLOT}
+  COMMENT "> generate-plot: Outfile: '${CMAKE_CURRENT_BINARY_DIR}/${PLOT}'")
+
+# set(REPORT "analysis.pdf")
+# add_custom_command(
+#   OUTPUT ${REPORT}
+#   DEPENDS generate-data
+#   COMMAND ${CMAKE_CURRENT_SOURCE_DIR}/analyze.sh
+#     ${CMAKE_CURRENT_BINARY_DIR}/${RAW_DATA} # data in
+#     ${CMAKE_CURRENT_BINARY_DIR}/${REPORT}   # report out
+#   COMMENT "Analyzing gathered data")
+# 
+# add_custom_target(
+#   analyze-data ALL
+#   DEPENDS ${REPORT})
+# Now define a target which depends on the command and causes it to be executed.
+# See https://stackoverflow.com/questions/39960173/run-custom-shell-script-with-cmake
 
