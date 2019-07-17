@@ -12,7 +12,7 @@ sleep 3
 
 # run benchmark and store output verbatim into buffer file 
 $bin_path \
-  --benchmark_repetitions=10 \
+  --benchmark_repetitions=5 \
   --benchmark_report_aggregates_only=true \
   --benchmark_out_format=csv \
   --benchmark_out=$csv_path"_raw"

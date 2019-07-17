@@ -21,7 +21,7 @@ void loop(benchmark::State& state) {
   auto vec = std::vector<uint64_t>(SIZE, 7);
   for (auto _: state) {
     for (std::size_t ii = 0; ii < SIZE; ii += stride) {
-      benchmark::DoNotOptimize(vec[ii]);
+      vec[ii] *= 3; 
     }
   }
 }

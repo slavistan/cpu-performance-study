@@ -11,7 +11,7 @@ target_link_libraries(looped-mem-access PRIVATE benchmark::benchmark)
 # Run the benchmark and save results to CSV
 set(CSV_PATH "${CMAKE_CURRENT_BINARY_DIR}/data.csv")
 add_custom_target(
-  looped-mem-access-run-benchmark ALL
+  looped-mem-access-run-benchmark
   DEPENDS looped-mem-access
   BYPRODUCTS ${CSV_PATH}
   COMMAND ${CMAKE_CURRENT_SOURCE_DIR}/run-benchmark.sh
@@ -22,8 +22,8 @@ add_custom_target(
 # Generate a report from the CSV
 set(REPORT_PATH "${CMAKE_CURRENT_BINARY_DIR}/report.png")
 add_custom_target(
-  looped-mem-access-generate-report ALL
-  DEPENDS looped-mem-access-run-benchmark ${CSV_PATH}
+  looped-mem-access-generate-report
+  DEPENDS ${CSV_PATH}
   BYPRODUCTS ${REPORT_PATH}
   COMMAND Rscript ${CMAKE_CURRENT_SOURCE_DIR}/generate-report.R
     ${CSV_PATH}
