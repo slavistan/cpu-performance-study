@@ -1,51 +1,30 @@
 cmake_minimum_required(VERSION 3.14)
 
+## Target
 # Generate the benchmark binary
 find_package(benchmark REQUIRED)
 add_executable(looped-mem-access looped-mem-access.cpp)
 target_compile_features(looped-mem-access PRIVATE cxx_std_20)
 target_link_libraries(looped-mem-access PRIVATE benchmark::benchmark)
 
-# Add custom command to generate a report
-
-set(CSVDATA "data.csv")
-add_custom_command(
-  OUTPUT ${CSVDATA}
+## Target - run manually
+# Run the benchmark and save results to CSV
+set(CSV_PATH "${CMAKE_CURRENT_BINARY_DIR}/data.csv")
+add_custom_target(
+  looped-mem-access-run-benchmark ALL
   DEPENDS looped-mem-access
-  COMMAND ${CMAKE_CURRENT_SOURCE_DIR}/generate-data.sh 
+  BYPRODUCTS ${CSV_PATH}
+  COMMAND ${CMAKE_CURRENT_SOURCE_DIR}/run-benchmark.sh
     $<TARGET_FILE:looped-mem-access>
-    ${CMAKE_CURRENT_BINARY_DIR}/${CSVDATA})
+    ${CSV_PATH})
 
+## Target - run manually
+# Generate a report from the CSV
+set(REPORT_PATH "${CMAKE_CURRENT_BINARY_DIR}/report.png")
 add_custom_target(
-  generate-csvdata ALL
-  DEPENDS ${CSVDATA}
-  COMMENT "> generate-csvdata: Outfile: '${CMAKE_CURRENT_BINARY_DIR}/${CSVDATA}'")
-
-set(PLOT "plot.png")
-add_custom_command(
-  OUTPUT ${PLOT}
-  DEPENDS generate-csvdata
-  COMMAND Rscript ${CMAKE_CURRENT_SOURCE_DIR}/plot-raw-data.R
-    ${CMAKE_CURRENT_BINARY_DIR}/${CSVDATA}
-    ${CMAKE_CURRENT_BINARY_DIR}/${PLOT})
-
-add_custom_target(
-  generate-plot ALL
-  DEPENDS ${PLOT}
-  COMMENT "> generate-plot: Outfile: '${CMAKE_CURRENT_BINARY_DIR}/${PLOT}'")
-
-# set(REPORT "analysis.pdf")
-# add_custom_command(
-#   OUTPUT ${REPORT}
-#   DEPENDS generate-data
-#   COMMAND ${CMAKE_CURRENT_SOURCE_DIR}/analyze.sh
-#     ${CMAKE_CURRENT_BINARY_DIR}/${RAW_DATA} # data in
-#     ${CMAKE_CURRENT_BINARY_DIR}/${REPORT}   # report out
-#   COMMENT "Analyzing gathered data")
-# 
-# add_custom_target(
-#   analyze-data ALL
-#   DEPENDS ${REPORT})
-# Now define a target which depends on the command and causes it to be executed.
-# See https://stackoverflow.com/questions/39960173/run-custom-shell-script-with-cmake
-
+  looped-mem-access-generate-report ALL
+  DEPENDS looped-mem-access-run-benchmark ${CSV_PATH}
+  BYPRODUCTS ${REPORT_PATH}
+  COMMAND Rscript ${CMAKE_CURRENT_SOURCE_DIR}/generate-report.R
+    ${CSV_PATH}
+    ${REPORT_PATH})

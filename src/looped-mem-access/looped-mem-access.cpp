@@ -12,20 +12,20 @@
 
 // Size should be considerably larger than any cache to ensure that most memory
 // accesses read from RAM.
-constexpr auto SIZE = 128 * 1024;// * 1024;
+constexpr auto SIZE = 128 * 1024 * 1024;
 
 // This name ('loop') is used inside the analysis script. Don't change it.
 void loop(benchmark::State& state) {
 
   const auto stride = state.range(0);
-  auto vec = std::vector<uint8_t>(SIZE, 7);
+  auto vec = std::vector<uint64_t>(SIZE, 7);
   for (auto _: state) {
-    for (std::size_t ii = 0; ii < vec.size(); ii += stride) {
-      benchmark::DoNotOptimize(vec[ii] += 3);
+    for (std::size_t ii = 0; ii < SIZE; ii += stride) {
+      benchmark::DoNotOptimize(vec[ii]);
     }
   }
 }
 
-BENCHMARK(loop) -> DenseRange(1, 5, 1);
+BENCHMARK(loop) -> DenseRange(1, 16, 1);
 
 BENCHMARK_MAIN();
