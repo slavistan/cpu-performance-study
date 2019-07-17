@@ -6,6 +6,7 @@ find_package(benchmark REQUIRED)
 add_executable(looped-mem-access looped-mem-access.cpp)
 target_compile_features(looped-mem-access PRIVATE cxx_std_20)
 target_link_libraries(looped-mem-access PRIVATE benchmark::benchmark)
+target_compile_options(looped-mem-access PRIVATE -O3 -DNDEBUG)
 
 ## Target - run manually
 # Run the benchmark and save results to CSV
