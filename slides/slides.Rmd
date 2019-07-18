@@ -1,0 +1,145 @@
+---
+output:
+  xaringan::moon_reader:
+    nature: {ratio: "16:9"}
+    self_contained: true
+---
+
+# First Slide
+
+<div align="center">
+  <img src="assets/photoshop.jpg" width="85%">
+</div>
+
+<div class="notes">
+
+</div>
+
+---
+
+# Second Slide
+
+<div align="center" style="overflow: hidden; max-height: 200px;">
+  <img src="assets/photoshop.jpg" width="85%">
+</div>
+<div align="center">
+  <img src="assets/blur-kernel.jpg" width="30%">
+</div>
+
+---
+
+# Third 
+
+<div align="center" style="overflow: hidden; max-height: 200px;">
+  <img src="assets/photoshop.jpg" width="85%">
+</div>
+<br><br>
+<div align="center">
+  <img src="assets/traversal-schemes.png" width="85%">
+</div>
+
+---
+
+# Fve
+
+```cpp
+// Zeilenweise
+for (int row = 0; row < dim; row++) {
+  for (int col = 0; col < dim; col++) {
+    sum += pixel[row][col];
+  }
+}
+
+```
+
+```cpp
+// Spaltenweise
+for (int col = 0; col < dim; col++) {
+  for (int row = 0; row < dim; row++) {
+    sum += pixel[row][col];
+  }
+}
+```
+
+---
+
+# Performance
+
+<div align="center">
+  <img src="assets/col-vs-row-major-report.png" width="85%">
+</div>
+
+---
+
+# Motherboard
+
+<div align="center">
+  <img src="assets/motherboard.jpg" width="55%">
+</div>
+
+<div class="notes">
+  Moore's Law
+</div>
+
+---
+
+# Motherboard
+
+<div align="center">
+  <img src="assets/motherboard-overlay.jpg" width="55%">
+</div>
+
+<div class="notes">
+  Moore's Law
+</div>
+
+---
+
+# CPU vs. RAM Performance
+
+<div align="center">
+  <img src="assets/moore.png" width="75%">
+</div>
+
+---
+
+# CPU vs. RAM Performance
+
+<div align="center">
+  <img src="assets/die.jpg" width="40%">
+</div>
+
+---
+
+# Caching
+
+<div align="center">
+  <img src="assets/cacheline.jpg" width="65%">
+</div>
+
+<div class="notes">
+  Speicher wird als Block geladen; Arbeiten aus Cache schnell
+</div>
+
+---
+
+# _
+
+<div align="center" style="overflow: hidden; max-height: 200px;">
+  <img src="assets/photoshop.jpg" width="85%">
+</div>
+<br><br>
+<div align="center">
+  <img src="assets/rowmajor-layout.png" width="65%">
+</div>
+
+---
+
+# Performance
+
+<div align="center">
+  <img src="assets/col-vs-row-major-report.png" width="85%">
+</div>
+
+---
+

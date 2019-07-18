@@ -32,16 +32,19 @@ COMMAND ${CMAKE_CURRENT_SOURCE_DIR}/prepare-data.sh
 
 ## Target
 # Generate a report from the CSV
-set(REPORT_PATH "${CMAKE_CURRENT_BINARY_DIR}/report.png")
+set(REPORT_PATH "${CMAKE_CURRENT_BINARY_DIR}/col-vs-row-major-report.png")
 add_custom_target(
   col-vs-row-major-generate-report
   DEPENDS ${CSV_PATH}
   BYPRODUCTS ${REPORT_PATH}
   COMMAND Rscript ${CMAKE_CURRENT_SOURCE_DIR}/generate-report.R
     ${CSV_PATH}
-    ${REPORT_PATH})
+    ${REPORT_PATH}
+  COMMAND cp ${REPORT_PATH} ${CMAKE_SOURCE_DIR}/slides/assets
+    )
 
 # Copy files into build directory for ease of debugging
 configure_file(${CMAKE_CURRENT_SOURCE_DIR}/run-benchmark.sh ${CMAKE_CURRENT_BINARY_DIR}/run-benchmark.sh COPYONLY)
 configure_file(${CMAKE_CURRENT_SOURCE_DIR}/generate-report.R ${CMAKE_CURRENT_BINARY_DIR}/generate-report.R COPYONLY)
 configure_file(${CMAKE_CURRENT_SOURCE_DIR}/prepare-data.sh ${CMAKE_CURRENT_BINARY_DIR}/prepare-data.sh COPYONLY)
+
