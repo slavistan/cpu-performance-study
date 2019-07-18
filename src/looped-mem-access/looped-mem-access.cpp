@@ -20,9 +20,11 @@ void loop(benchmark::State& state) {
   const auto stride = state.range(0);
   auto vec = std::vector<uint64_t>(SIZE, 7);
   for (auto _: state) {
+
     for (std::size_t ii = 0; ii < SIZE; ii += stride) {
-      vec[ii] *= 3; 
+      vec[ii] *= 3;
     }
+
   }
 }
 
