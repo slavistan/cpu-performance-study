@@ -37,7 +37,7 @@ void colmajor(benchmark::State& state) {
   }
 }
 
-#define MAX 2
+#define MAX 15
 BENCHMARK(rowmajor)->RangeMultiplier(2)->Range(8, 1 << MAX);
 BENCHMARK(colmajor)->RangeMultiplier(2)->Range(8, 1 << MAX);
 

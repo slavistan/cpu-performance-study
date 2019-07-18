@@ -14,6 +14,8 @@ outfile <- args[2]
 library(tidyverse)
 df <- read.csv(csv.path, comment.char = '#', header = T)
 ggplot(df %>% filter(metric == "mean")) +
-  geom_point(aes(x = matrixdim, y = cpu_time, color = scheme))
+  geom_line(aes(x = matrixdim, y = cpu_time, color = scheme)) +
+  scale_y_log10(breaks = 10 ^ (0:11)) +
+  scale_x_log10(breaks = 2 ^ (0:30))
 
 ggsave(outfile)

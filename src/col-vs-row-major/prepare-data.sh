@@ -8,5 +8,5 @@ cat "$1" \
   | sed '/median/ d' \
   | sed 's/^name/scheme,matrixdim,metric/g' \
   | tr -d '"' \
-  | sed 's:jor/\([[:digit:]]\)\+_:jor,\1,:g' \
+  | sed 's:jor/\([[:digit:]]\+\)_:jor,\1,:g' \
   > "$2"

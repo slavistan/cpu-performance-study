@@ -30,7 +30,7 @@ COMMAND ${CMAKE_CURRENT_SOURCE_DIR}/prepare-data.sh
   ${RAWCSV_PATH}
   ${CSV_PATH})
 
-## Target - run manually
+## Target
 # Generate a report from the CSV
 set(REPORT_PATH "${CMAKE_CURRENT_BINARY_DIR}/report.png")
 add_custom_target(
