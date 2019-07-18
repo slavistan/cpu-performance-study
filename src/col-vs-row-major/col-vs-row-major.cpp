@@ -1,5 +1,5 @@
 // Measure performance drop due to a mismatched memory access scheme. We create
-// a rowmajor matrix in memory and measure the latency for accesses using a 
+// a rowmajor matrix in memory and measure the latency for accesses using a
 // colmajor and rowmajor scheme.
 #include <benchmark/benchmark.h>
 
@@ -9,11 +9,9 @@
 #include <numeric>
 #include <vector>
 
-// Matrix dimension
-constexpr uint64_t DIM = 10000;
-
 void rowmajor(benchmark::State& state) {
-  auto vec = std::vector<double>(DIM * DIM);
+  const auto DIM = state.range(0);
+  auto vec = std::vector<double>(static_cast<std::size_t>(DIM) * DIM);
   for (auto _: state) {
     for(uint64_t y = 0; y < DIM; y += 1) {
       for(uint64_t x = 0; x < DIM; x += 1) {
@@ -26,7 +24,8 @@ void rowmajor(benchmark::State& state) {
 }
 
 void colmajor(benchmark::State& state) {
-  auto vec = std::vector<double>(DIM * DIM);
+  const auto DIM = state.range(0);
+  auto vec = std::vector<double>(static_cast<std::size_t>(DIM) * DIM);
   for (auto _: state) {
     for(uint64_t y = 0; y < DIM; y += 1) {
       for(uint64_t x = 0; x < DIM; x += 1) {
@@ -38,7 +37,8 @@ void colmajor(benchmark::State& state) {
   }
 }
 
-BENCHMARK(rowmajor)->DenseRange(1, 1, 1);
-BENCHMARK(colmajor)->DenseRange(1, 1, 1);
+#define MAX 2
+BENCHMARK(rowmajor)->RangeMultiplier(2)->Range(8, 1 << MAX);
+BENCHMARK(colmajor)->RangeMultiplier(2)->Range(8, 1 << MAX);
 
 BENCHMARK_MAIN();
