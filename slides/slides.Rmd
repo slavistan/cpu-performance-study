@@ -6,9 +6,7 @@ output:
     self_contained: true
 ---
 
-# CPU Caches
-
-<div align="center">
+<div align="center" style="padding: 50px">
   <img src="assets/photoshop.jpg" width="85%">
 </div>
 
@@ -18,9 +16,7 @@ output:
 
 ---
 
-# Second Slide
-
-<div align="center" style="overflow: hidden; max-height: 200px;">
+<div align="center" style="padding: 50px; overflow: hidden; max-height: 200px;">
   <img src="assets/photoshop.jpg" width="85%">
 </div>
 <div align="center">
@@ -29,9 +25,7 @@ output:
 
 ---
 
-# Third 
-
-<div align="center" style="overflow: hidden; max-height: 200px;">
+<div align="center" style="overflow: hidden; max-height: 200px; padding: 50px">
   <img src="assets/photoshop.jpg" width="85%">
 </div>
 <br><br>
@@ -41,10 +35,8 @@ output:
 
 ---
 
-# Fve
-
 ```cpp
-// Zeilenweise
+// Reihenweise
 for (int row = 0; row < dim; row++) {
   for (int col = 0; col < dim; col++) {
     sum += pixel[row][col];
@@ -64,17 +56,13 @@ for (int col = 0; col < dim; col++) {
 
 ---
 
-# Performance
-
-<div align="center">
-  <img src="assets/col-vs-row-major-report.png" width="85%">
+<div align="center" style="padding: 50px">
+  <img src="assets/col-vs-row-major-report.png" width="100%">
 </div>
 
 ---
 
-# Motherboard
-
-<div align="center">
+<div align="center" style="padding: 50px">
   <img src="assets/motherboard.jpg" width="55%">
 </div>
 
@@ -84,9 +72,7 @@ for (int col = 0; col < dim; col++) {
 
 ---
 
-# Motherboard
-
-<div align="center">
+<div align="center" style="padding: 50px">
   <img src="assets/motherboard-overlay.jpg" width="55%">
 </div>
 
@@ -96,25 +82,19 @@ for (int col = 0; col < dim; col++) {
 
 ---
 
-# CPU vs. RAM Performance
-
-<div align="center">
+<div align="center" style="padding: 50px">
   <img src="assets/moore.png" width="75%">
 </div>
 
 ---
 
-# CPU vs. RAM Performance
-
-<div align="center">
+<div align="center" style="padding: 50px">
   <img src="assets/die.jpg" width="40%">
 </div>
 
 ---
 
-# Caching
-
-<div align="center">
+<div align="center" style="padding: 50px">
   <img src="assets/cacheline.jpg" width="65%">
 </div>
 
@@ -124,22 +104,18 @@ for (int col = 0; col < dim; col++) {
 
 ---
 
-# _
-
-<div align="center" style="overflow: hidden; max-height: 200px;">
+<div align="center" style="padding: 50px; overflow: hidden; max-height: 200px;">
   <img src="assets/photoshop.jpg" width="85%">
 </div>
 <br><br>
-<div align="center">
+<div align="center" style="padding: 50px">
   <img src="assets/rowmajor-layout.png" width="65%">
 </div>
 
 ---
 
-# Performance
-
-<div align="center">
-  <img src="assets/col-vs-row-major-report.png" width="85%">
+<div align="center" style="padding: 50px">
+  <img src="assets/col-vs-row-major-report.png" width="100%">
 </div>
 
 ---
