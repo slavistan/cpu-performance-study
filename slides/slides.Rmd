@@ -35,6 +35,8 @@ output:
 
 ---
 
+<br><br>
+
 ```cpp
 // Reihenweise
 for (int row = 0; row < dim; row++) {
@@ -44,6 +46,8 @@ for (int row = 0; row < dim; row++) {
 }
 
 ```
+
+<br><br>
 
 ```cpp
 // Spaltenweise
@@ -89,7 +93,7 @@ for (int col = 0; col < dim; col++) {
 ---
 
 <div align="center" style="padding: 50px">
-  <img src="assets/die.jpg" width="40%">
+  <img src="assets/die.jpg" width="60%">
 </div>
 
 ---
