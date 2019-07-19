@@ -1,11 +1,12 @@
 ---
+title: CPU Caches
 output:
   xaringan::moon_reader:
     nature: {ratio: "16:9"}
     self_contained: true
 ---
 
-# First Slide
+# CPU Caches
 
 <div align="center">
   <img src="assets/photoshop.jpg" width="85%">
