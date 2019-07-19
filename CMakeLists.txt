@@ -21,3 +21,4 @@ project(CPU-Performance-Study
   LANGUAGES CXX)
 
 add_subdirectory(src)
+add_subdirectory(slides)

@@ -7,3 +7,5 @@ build_debug
 *.RData
 *.Rhistory
 */*.swp
+slides/slides.html
+slides/slides_files
