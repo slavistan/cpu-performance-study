@@ -67,43 +67,31 @@ for (int col = 0; col < dim; col++) {
 ---
 
 <div align="center" style="padding: 50px">
-  <img src="assets/motherboard.jpg" width="55%">
-</div>
-
-<div class="notes">
-  Moore's Law
+  <img src="assets/motherboard.jpg" width="65%">
 </div>
 
 ---
 
 <div align="center" style="padding: 50px">
-  <img src="assets/motherboard-overlay.jpg" width="55%">
-</div>
-
-<div class="notes">
-  Moore's Law
+  <img src="assets/motherboard-overlay.jpg" width="65%">
 </div>
 
 ---
 
 <div align="center" style="padding: 50px">
-  <img src="assets/moore.png" width="75%">
+  <img src="assets/moore.png" width="100%">
 </div>
 
 ---
 
 <div align="center" style="padding: 50px">
-  <img src="assets/die.jpg" width="60%">
+  <img src="assets/die.jpg" width="50%">
 </div>
 
 ---
 
 <div align="center" style="padding: 50px">
-  <img src="assets/cacheline.jpg" width="65%">
-</div>
-
-<div class="notes">
-  Speicher wird als Block geladen; Arbeiten aus Cache schnell
+  <img src="assets/cacheline.jpg" width="75%">
 </div>
 
 ---
@@ -124,3 +112,20 @@ for (int col = 0; col < dim; col++) {
 
 ---
 
+<div align="center" style="padding: 50px">
+  <img src="assets/falsesharing-bad.png" width="100%">
+</div>
+
+---
+
+<div align="center" style="padding: 50px">
+  <img src="assets/false-sharing-illustration.png" width="100%">
+</div>
+
+---
+
+<div align="center" style="padding: 50px">
+  <img src="assets/falsesharing-good.png" width="100%">
+</div>
+
+---

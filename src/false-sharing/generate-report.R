@@ -13,10 +13,15 @@ outfile <- args[2]
 # TODO: Add errorbars
 library(tidyverse)
 df <- read.csv(csv.path, comment.char = '#', header = T)
-ggplot(df %>% filter(metric == "mean")) +
-  geom_point(aes(x = threads, y = cpu_time)) +
-  facet_wrap(~scheme, scales="free") +
-  theme(axis.ticks.y = element_blank(),
-        axis.text.y = element_blank())
+ggplot(df %>% filter(metric == "mean", scheme == "nosharing")) +
+  geom_line(aes(x = threads, y = cpu_time)) +
+  theme(aspect.ratio = 9/16)
 
-ggsave(outfile)
+ggsave(paste0(outfile,"1.png"),   height=4.5, width=8)
+
+df <- read.csv(csv.path, comment.char = '#', header = T)
+ggplot(df %>% filter(metric == "mean", scheme == "falsesharing")) +
+  geom_line(aes(x = threads, y = cpu_time)) +
+  theme(aspect.ratio = 9/16)
+
+ggsave(paste0(outfile,"2.png"),   height=4.5, width=8)
