@@ -1,5 +1,10 @@
 function(register_benchmark arg_target)
 
+  # TODO: Create a cmake command to autogenerate a benchmark template
+  #       'cmake -P scripts/benchmark-new'
+  #         -> Create a subdir in benchmarks
+  #         -> Fill that subdir with a CMakelists, benchmark.sh
+
   # Parse named arguments and set defaults.
   cmake_parse_arguments(arg "" "SCRIPT;CSV;RAWCSV;CSVDIR" "" ${ARGN})
 
