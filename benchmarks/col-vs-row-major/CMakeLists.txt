@@ -56,10 +56,17 @@ function(register_benchmark arg_target)
   # Register target which will add information to the benchmark's output and
   # will apply formatting. The script will be invoked as
   # '> /path/to/benchmark.sh format /path/to/raw-output.csv /path/to/prepared-output.csv'
+  # Additionally, store the formatted output permanently.
+  execute_process(
+    COMMAND /usr/bin/sh -c "date +%Y-%m-%d-%H:%m:%S:%N"
+    OUTPUT_VARIABLE timestamp)
+  string(REGEX REPLACE "\n$" "" timestamp "${timestamp}") # remove trailing newlines
+  set(unique-name "${arg_csvdir}/result-${timestamp}.csv")
   add_custom_target(${arg_target}-format
     DEPENDS ${arg_rawcsv}
     BYPRODUCTS ${arg_csv}
     COMMAND ${arg_script} format ${arg_rawcsv} ${arg_csv}
+    COMMAND ${CMAKE_COMMAND} -E copy ${arg_csv} ${unique-name}
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR})
 
   # Register target which will generate a report from the formatted data. The
@@ -74,22 +81,4 @@ function(register_benchmark arg_target)
 endfunction()
 
 register_benchmark(col-vs-row-major)
-# 
-# ## Target
-# # Generate a report from the CSV
-# set(REPORT_PATH "${CMAKE_CURRENT_BINARY_DIR}/col-vs-row-major-report.png")
-# add_custom_target(
-#   col-vs-row-major-generate-report
-#   DEPENDS ${CSV_PATH}
-#   BYPRODUCTS ${REPORT_PATH}
-#   COMMAND Rscript ${CMAKE_CURRENT_SOURCE_DIR}/generate-report.R
-#     ${CSV_PATH}
-#     ${REPORT_PATH}
-#   COMMAND cp ${REPORT_PATH} ${CMAKE_SOURCE_DIR}/slides/assets
-#     )
-# 
-# # Copy files into build directory for ease of debugging
-# configure_file(${CMAKE_CURRENT_SOURCE_DIR}/run-benchmark.sh ${CMAKE_CURRENT_BINARY_DIR}/run-benchmark.sh COPYONLY)
-# configure_file(${CMAKE_CURRENT_SOURCE_DIR}/generate-report.R ${CMAKE_CURRENT_BINARY_DIR}/generate-report.R COPYONLY)
-# configure_file(${CMAKE_CURRENT_SOURCE_DIR}/prepare-data.sh ${CMAKE_CURRENT_BINARY_DIR}/prepare-data.sh COPYONLY)
-# 
+# TODO: Add other targets/subdirs
