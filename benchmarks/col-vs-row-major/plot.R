@@ -2,6 +2,7 @@
 
 args <- commandArgs(trailingOnly = T)
 csv.path <- args[1]
+out.dir <- args[2]
 
 library(tidyverse)
 df <- read.csv(csv.path, comment.char = '#', header = T) %>% 
@@ -20,4 +21,4 @@ plt <- ggplot(df %>% filter(metric == "mean")) +
   labs(x = "Image Size [MB]", y = "Slowdown") +
   theme(aspect.ratio = 9/16)
 
-ggsave(args[2], height=4.5, width=8)
+ggsave(paste0(out.dir, "/plot.png"), height=4.5, width=8)

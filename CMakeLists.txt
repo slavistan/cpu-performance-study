@@ -21,6 +21,15 @@ if( (NOT ${CMAKE_CXX_COMPILER_ID} STREQUAL "clang") AND
   message(FATAL_ERROR "Either GNU compiler or clang required. Your compiler is: ${CMAKE_CXX_COMPILER_ID}")
 endif()
 
+# Allow the user to run pre- and post-benchmark commands. This might be used to
+# disable CPU frequency scaling.
+set(BENCHMARK_PRE_CMD ${PROJECT_SOURCE_DIR}/benchmarks/benchmark-setup-teardown.sh setup
+  CACHE STRING "Command to be executed prior to every benchmark.")
+set(BENCHMARK_POST_CMD ${PROJECT_SOURCE_DIR}/benchmarks/benchmark-setup-teardown.sh teardown 
+  CACHE STRING "Command to be executed after every benchmark.")
+
+set(CSVROOT "${PROJECT_SOURCE_DIR}/csv") # permanently stores benchmark results
+add_subdirectory(csv)        # Results
 add_subdirectory(benchmarks) # Benchmark sources
-add_subdirectory(slides) # Presentation
-add_subdirectory(csv) # Results
+add_subdirectory(slides)     # Presentation
+
