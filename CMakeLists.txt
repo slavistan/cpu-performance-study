@@ -4,8 +4,6 @@
 cmake_minimum_required(VERSION 3.14)
 
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON) # generate a compilation database
-# set(CMAKE_DISABLE_SOURCE_CHANGES ON)
-# set(CMAKE_DISABLE_IN_SOURCE_BUILD ON)
 
 project(CPU-Performance-Study
   VERSION 0.0.1
@@ -15,7 +13,7 @@ if (NOT ${CMAKE_BUILD_TYPE} STREQUAL "")
   message(FATAL_ERROR "The build type must not be defined.\n \
 This project relies on manual control of the compiler flags. Some targets \
 must be built with optimizations while certain cache effects cannot be \
-observe unless optimization is disabled.")
+observed unless optimization is disabled.")
 endif()
 
 if( (NOT ${CMAKE_CXX_COMPILER_ID} STREQUAL "clang") AND
@@ -23,6 +21,6 @@ if( (NOT ${CMAKE_CXX_COMPILER_ID} STREQUAL "clang") AND
   message(FATAL_ERROR "Either GNU compiler or clang required. Your compiler is: ${CMAKE_CXX_COMPILER_ID}")
 endif()
 
-add_subdirectory(benchmarks)
-add_subdirectory(slides)
-add_subdirectory(csv)
+add_subdirectory(benchmarks) # Benchmark sources
+add_subdirectory(slides) # Presentation
+add_subdirectory(csv) # Results
