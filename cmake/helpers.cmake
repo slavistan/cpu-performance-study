@@ -4,6 +4,8 @@ function(register_benchmark arg_target)
   #       'cmake -P scripts/benchmark-new'
   #         -> Create a subdir in benchmarks
   #         -> Fill that subdir with a CMakelists, benchmark.sh
+  #       Should this be a target itself? It seems that build info is
+  #       required to do this.
 
   # Parse named arguments and set defaults.
   cmake_parse_arguments(arg "" "SCRIPT;CSV;RAWCSV;CSVDIR" "" ${ARGN})
