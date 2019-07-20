@@ -9,4 +9,3 @@ target_link_libraries(col-vs-row-major PRIVATE benchmark::benchmark)
 target_compile_options(col-vs-row-major PRIVATE "-O0")
 
 register_benchmark(col-vs-row-major)
-# TODO: Add other targets/subdirs
