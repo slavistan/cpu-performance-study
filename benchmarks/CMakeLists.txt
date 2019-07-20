@@ -1,5 +1,6 @@
-# TODO: Create a directory inside 'csv/' to permanently store benchmark results.
 
+# TODO: Move 'register_benchmark' into a central directory
+# TODO: Adapt existing benchmarks to fit 'register_benchmark'
 add_subdirectory(col-vs-row-major)
 
   # add_benchmark:

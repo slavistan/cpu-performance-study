@@ -57,6 +57,12 @@ function(register_benchmark arg_target)
   # will apply formatting. The script will be invoked as
   # '> /path/to/benchmark.sh format /path/to/raw-output.csv /path/to/prepared-output.csv'
   # Additionally, store the formatted output permanently.
+  # TODO: Add information about the run.
+  # - Time/Date
+  # - User
+  # - Machine Info
+  # Maybe create a separate script whose output shall be included into the
+  # formatted csv data. /scripts/
   execute_process(
     COMMAND /usr/bin/sh -c "date +%Y-%m-%d-%H:%m:%S:%N"
     OUTPUT_VARIABLE timestamp)
