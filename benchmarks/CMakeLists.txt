@@ -1,10 +1,7 @@
-
-# TODO: Move 'register_benchmark' into a central directory
-# TODO: Adapt existing benchmarks to fit 'register_benchmark'
 add_subdirectory(col-vs-row-major)
 
   # add_benchmark:
-  # 
+  #
   # file(GLOB subdirs LIST_DIRECTORIES true *)
   # foreach(fulldir ${subdirs})
   #   get_filename_component(dir ${fulldir} NAME)

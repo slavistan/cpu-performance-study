@@ -37,7 +37,7 @@ void colmajor(benchmark::State& state) {
   }
 }
 
-constexpr auto MAX = 8;
+constexpr auto MAX = 2;
 BENCHMARK(rowmajor)->RangeMultiplier(2)->Range(8, 1 << MAX);
 BENCHMARK(colmajor)->RangeMultiplier(2)->Range(8, 1 << MAX);
 
