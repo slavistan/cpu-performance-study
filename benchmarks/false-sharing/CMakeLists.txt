@@ -4,7 +4,6 @@ cmake_minimum_required(VERSION 3.14)
 # Generate the benchmark binary
 find_package(benchmark REQUIRED)
 find_package(OpenMP)
-
 add_executable(false-sharing false-sharing.cpp)
 target_compile_features(false-sharing PRIVATE cxx_std_20)
 target_link_libraries(false-sharing PRIVATE benchmark::benchmark OpenMP::OpenMP_CXX)

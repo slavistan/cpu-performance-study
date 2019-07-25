@@ -1,12 +1,5 @@
 # Generate a report from CSV data
 
-args <- commandArgs(trailingOnly = T)
-if (length(args) < 2) {
-  stop(paste0("Usage: Rscript generate-report.R ",
-               " \"/path/to/data.csv\"",
-               " \"/path/to/report.pdf\""))
-}
-
 csv.path <- args[1]
 outfile <- args[2]
 
